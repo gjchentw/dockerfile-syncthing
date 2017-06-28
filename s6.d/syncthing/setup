@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SYNCTHING_OWNER=${SYNCTHING_OWNER:-"root"}
+SYNCTHING_VOLUME=${SYNCTHING_VOLUME:-"/opt"}
+
+chown -R ${SYNCTHING_OWNER} ${SYNCTHING_VOLUME}
+ 
+if [ ! -f "${SYNCTHING_VOLUME}/.config/syncthing/config.xml" ]; then
+  su-exec ${SYNCTHING_OWNER} mkdir -p "${SYNCTHING_VOLUME}/.syncthing/"
+  su-exec ${SYNCTHING_OWNER} syncthing -generate="${SYNCTHING_VOLUME}/.syncthing/"
+  su-exec ${SYNCTHING_OWNER} sed -ie 's/127\.0\.0\.1\:8384/0\.0\.0\.0\:8384/g' "${SYNCTHING_VOLUME}/.syncthing/config.xml"
+fi
+
+
+

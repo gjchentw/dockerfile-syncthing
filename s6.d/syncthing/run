@@ -1,0 +1,9 @@
+#!/bin/bash
+[[ -f ./setup ]] && source ./setup
+
+pushd /root > /dev/null
+    SYNCTHING_OWNER=${SYNCTHING_OWNER:-"root"}
+    SYNCTHING_VOLUME=${SYNCTHING_VOLUME:-"/opt"}
+    
+    exec su-exec ${SYNCTHING_OWNER} syncthing -home="${SYNCTHING_VOLUME}/.syncthing/"
+popd
